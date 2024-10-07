@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 7.1.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
+
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"bran-d.github.io","root":"/","scheme":"Mist","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
+  </script>
+
+  <meta name="description" content="Confounding Factors (Confounding) and Causal Inference1 Concept and Impact of Confounding FactorsConfounding factors are variables that influence both the treatment and the outcome, causing a spurious">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Confounding">
+<meta property="og:url" content="http://bran-d.github.io/2023/12/28/Confounding/index.html">
+<meta property="og:site_name" content="YanhaoBlog">
+<meta property="og:description" content="Confounding Factors (Confounding) and Causal Inference1 Concept and Impact of Confounding FactorsConfounding factors are variables that influence both the treatment and the outcome, causing a spurious">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2023-12-28T08:32:07.000Z">
+<meta property="article:author" content="Yanhao Wu">
+<meta property="article:tag" content="Causal Inference">
+<meta name="twitter:card" content="summary">
+
+<link rel="canonical" href="http://bran-d.github.io/2023/12/28/Confounding/">
+
+
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'en'
+  };
+</script>
+
+  <title>Confounding | YanhaoBlog</title>
+  
+
+
+
+
+
+
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
+    <div class="headband"></div>
+
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="Toggle navigation bar">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">YanhaoBlog</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+<nav class="site-nav">
+  <ul id="menu" class="main-menu menu">
+        <li class="menu-item menu-item-home">
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>Home</a>
+
+  </li>
+        <li class="menu-item menu-item-tags">
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>Tags</a>
+
+  </li>
+        <li class="menu-item menu-item-archives">
+
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>Archives</a>
+
+  </li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+    </header>
+
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          
+
+          <div class="content post posts-expand">
+            
+
+    
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://bran-d.github.io/2023/12/28/Confounding/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/WechatIMG63.png">
+      <meta itemprop="name" content="Yanhao Wu">
+      <meta itemprop="description" content="code snippets and notes">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="YanhaoBlog">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Confounding
+        </h1>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+
+              <time title="Created: 2023-12-28 16:32:07" itemprop="dateCreated datePublished" datetime="2023-12-28T16:32:07+08:00">2023-12-28</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2024-10-07 17:26:38" itemprop="dateModified" datetime="2024-10-07T17:26:38+08:00">2024-10-07</time>
+              </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+        <h1 id="Confounding-Factors-Confounding-and-Causal-Inference"><a href="#Confounding-Factors-Confounding-and-Causal-Inference" class="headerlink" title="Confounding Factors (Confounding) and Causal Inference"></a>Confounding Factors (Confounding) and Causal Inference</h1><h2 id="1-Concept-and-Impact-of-Confounding-Factors"><a href="#1-Concept-and-Impact-of-Confounding-Factors" class="headerlink" title="1 Concept and Impact of Confounding Factors"></a>1 Concept and Impact of Confounding Factors</h2><p><strong>Confounding factors</strong> are variables that influence both the treatment and the outcome, causing a spurious association between them. These factors create biases in estimating the causal effect of a treatment or intervention.</p>
+<p>For example, in a study examining the effect of exercise on heart health, age could be a confounder if older individuals are less likely to exercise but also more likely to have heart problems.</p>
+<hr>
+<h2 id="2-The-Importance-of-Identifying-and-Adjusting-for-Confounding-Factors"><a href="#2-The-Importance-of-Identifying-and-Adjusting-for-Confounding-Factors" class="headerlink" title="2 The Importance of Identifying and Adjusting for Confounding Factors"></a>2 The Importance of Identifying and Adjusting for Confounding Factors</h2><p>Confounding leads to biased estimates of treatment effects, as it distorts the true relationship between treatment and outcome. Therefore, it is crucial to identify and adjust for confounding factors in order to isolate the causal effect of the treatment.</p>
+<hr>
+<h2 id="3-Adjusting-for-Confounders-Using-Propensity-Score"><a href="#3-Adjusting-for-Confounders-Using-Propensity-Score" class="headerlink" title="3 Adjusting for Confounders Using Propensity Score"></a>3 Adjusting for Confounders Using <strong>Propensity Score</strong></h2><p>A widely-used method for addressing confounding is the <strong>propensity score</strong>. The propensity score is the probability of receiving the treatment given a set of observed covariates. It helps balance the distribution of confounders between treated and untreated groups, allowing for more accurate causal inferences.</p>
+<hr>
+<h3 id="3-1-Propensity-Score-Matching-PSM"><a href="#3-1-Propensity-Score-Matching-PSM" class="headerlink" title="3.1 Propensity Score Matching (PSM)"></a>3.1 Propensity Score Matching (PSM)</h3><p><strong>Propensity Score Matching (PSM)</strong> is a technique where individuals from the treatment group are matched with individuals from the control group based on similar propensity scores. This helps create a balanced dataset where the treatment and control groups are comparable in terms of the observed confounders.</p>
+<hr>
+<h3 id="3-2-Inverse-Probability-Weighting-IPW"><a href="#3-2-Inverse-Probability-Weighting-IPW" class="headerlink" title="3.2 Inverse Probability Weighting (IPW)"></a>3.2 Inverse Probability Weighting (IPW)</h3><p><strong>Inverse Probability Weighting (IPW)</strong> is another method that uses the propensity score to adjust for confounding. Each individual is weighted by the inverse of the probability of receiving the treatment they actually received. This approach creates a “pseudo-population” where the confounders are balanced across treatment groups.</p>
+<hr>
+<h2 id="4-Estimating-and-Implementing-Propensity-Scores-in-R"><a href="#4-Estimating-and-Implementing-Propensity-Scores-in-R" class="headerlink" title="4 Estimating and Implementing Propensity Scores in R"></a>4 Estimating and Implementing Propensity Scores in R</h2><h3 id="R-Code-Example-Estimating-Propensity-Scores-and-Using-PSM"><a href="#R-Code-Example-Estimating-Propensity-Scores-and-Using-PSM" class="headerlink" title="R Code Example: Estimating Propensity Scores and Using PSM"></a>R Code Example: Estimating Propensity Scores and Using PSM</h3><figure class="highlight r"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Load necessary libraries</span></span><br><span class="line">library<span class="punctuation">(</span>MASS<span class="punctuation">)</span></span><br><span class="line">library<span class="punctuation">(</span>MatchIt<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Simulate data</span></span><br><span class="line">set.seed<span class="punctuation">(</span><span class="number">123</span><span class="punctuation">)</span></span><br><span class="line">n <span class="operator">&lt;-</span> 500</span><br><span class="line"><span class="comment"># Covariate that is a confounder</span></span><br><span class="line">age <span class="operator">&lt;-</span> rnorm<span class="punctuation">(</span>n<span class="punctuation">,</span> mean <span class="operator">=</span> <span class="number">50</span><span class="punctuation">,</span> sd <span class="operator">=</span> <span class="number">10</span><span class="punctuation">)</span></span><br><span class="line"><span class="comment"># Treatment assignment based on the confounder</span></span><br><span class="line">W <span class="operator">&lt;-</span> rbinom<span class="punctuation">(</span>n<span class="punctuation">,</span> <span class="number">1</span><span class="punctuation">,</span> prob <span class="operator">=</span> plogis<span class="punctuation">(</span><span class="number">0.05</span> <span class="operator">*</span> age <span class="operator">-</span> <span class="number">2</span><span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line"><span class="comment"># Outcome influenced by both treatment and confounder</span></span><br><span class="line">Y <span class="operator">&lt;-</span> 5 <span class="operator">+</span> <span class="number">0.5</span> <span class="operator">*</span> W <span class="operator">+</span> <span class="number">0.2</span> <span class="operator">*</span> age <span class="operator">+</span> rnorm<span class="punctuation">(</span>n<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Create a dataframe</span></span><br><span class="line">data <span class="operator">&lt;-</span> data.frame<span class="punctuation">(</span>W<span class="punctuation">,</span> Y<span class="punctuation">,</span> age<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Estimate propensity scores using logistic regression</span></span><br><span class="line">ps_model <span class="operator">&lt;-</span> glm<span class="punctuation">(</span>W <span class="operator">~</span> age<span class="punctuation">,</span> family <span class="operator">=</span> binomial<span class="punctuation">(</span><span class="punctuation">)</span><span class="punctuation">,</span> data <span class="operator">=</span> data<span class="punctuation">)</span></span><br><span class="line">propensity_scores <span class="operator">&lt;-</span> predict<span class="punctuation">(</span>ps_model<span class="punctuation">,</span> type <span class="operator">=</span> <span class="string">&quot;response&quot;</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 1: Perform Propensity Score Matching (PSM)</span></span><br><span class="line">match_it <span class="operator">&lt;-</span> matchit<span class="punctuation">(</span>W <span class="operator">~</span> age<span class="punctuation">,</span> method <span class="operator">=</span> <span class="string">&quot;nearest&quot;</span><span class="punctuation">,</span> data <span class="operator">=</span> data<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Check balance after matching</span></span><br><span class="line">summary<span class="punctuation">(</span>match_it<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 2: Estimate treatment effect using matched data</span></span><br><span class="line">matched_data <span class="operator">&lt;-</span> match.data<span class="punctuation">(</span>match_it<span class="punctuation">)</span></span><br><span class="line">treatment_effect <span class="operator">&lt;-</span> lm<span class="punctuation">(</span>Y <span class="operator">~</span> W<span class="punctuation">,</span> data <span class="operator">=</span> matched_data<span class="punctuation">)</span></span><br><span class="line">summary<span class="punctuation">(</span>treatment_effect<span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Step 3: Perform Inverse Probability Weighting (IPW)</span></span><br><span class="line">weights <span class="operator">&lt;-</span> ifelse<span class="punctuation">(</span>W <span class="operator">==</span> <span class="number">1</span><span class="punctuation">,</span> <span class="number">1</span> <span class="operator">/</span> propensity_scores<span class="punctuation">,</span> <span class="number">1</span> <span class="operator">/</span> <span class="punctuation">(</span><span class="number">1</span> <span class="operator">-</span> propensity_scores<span class="punctuation">)</span><span class="punctuation">)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Estimate weighted treatment effect</span></span><br><span class="line">weighted_model <span class="operator">&lt;-</span> lm<span class="punctuation">(</span>Y <span class="operator">~</span> W<span class="punctuation">,</span> weights <span class="operator">=</span> weights<span class="punctuation">,</span> data <span class="operator">=</span> data<span class="punctuation">)</span></span><br><span class="line">summary<span class="punctuation">(</span>weighted_model<span class="punctuation">)</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+    </div>
+
+    
+    
+    
+
+      <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Causal-Inference/" rel="tag"># Causal Inference</a>
+          </div>
+
+        
+
+
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2023/12/14/Counterfactual-Framework/" rel="prev" title="Counterfactual Framework">
+      <i class="fa fa-chevron-left"></i> Counterfactual Framework
+    </a></div>
+      <div class="post-nav-item">
+    <a href="/2024/01/07/Instrumental-Variables/" rel="next" title="Instrumental Variables">
+      Instrumental Variables <i class="fa fa-chevron-right"></i>
+    </a></div>
+    </div>
+      </footer>
+    
+  </article>
+  
+  
+  
+
+
+
+          </div>
+          
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          Table of Contents
+        </li>
+        <li class="sidebar-nav-overview">
+          Overview
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Confounding-Factors-Confounding-and-Causal-Inference"><span class="nav-number">1.</span> <span class="nav-text">Confounding Factors (Confounding) and Causal Inference</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Concept-and-Impact-of-Confounding-Factors"><span class="nav-number">1.1.</span> <span class="nav-text">1 Concept and Impact of Confounding Factors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-The-Importance-of-Identifying-and-Adjusting-for-Confounding-Factors"><span class="nav-number">1.2.</span> <span class="nav-text">2 The Importance of Identifying and Adjusting for Confounding Factors</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Adjusting-for-Confounders-Using-Propensity-Score"><span class="nav-number">1.3.</span> <span class="nav-text">3 Adjusting for Confounders Using Propensity Score</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#3-1-Propensity-Score-Matching-PSM"><span class="nav-number">1.3.1.</span> <span class="nav-text">3.1 Propensity Score Matching (PSM)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-2-Inverse-Probability-Weighting-IPW"><span class="nav-number">1.3.2.</span> <span class="nav-text">3.2 Inverse Probability Weighting (IPW)</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#4-Estimating-and-Implementing-Propensity-Scores-in-R"><span class="nav-number">1.4.</span> <span class="nav-text">4 Estimating and Implementing Propensity Scores in R</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#R-Code-Example-Estimating-Propensity-Scores-and-Using-PSM"><span class="nav-number">1.4.1.</span> <span class="nav-text">R Code Example: Estimating Propensity Scores and Using PSM</span></a></li></ol></li></ol></li></ol></div>
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Yanhao Wu"
+      src="/images/WechatIMG63.png">
+  <p class="site-author-name" itemprop="name">Yanhao Wu</p>
+  <div class="site-description" itemprop="description">code snippets and notes</div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">17</span>
+          <span class="site-state-item-name">posts</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">tags</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2024</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Yanhao Wu</span>
+</div>
+  <div class="powered-by">Powered by <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://mist.theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a>
+  </div>
+
+        
+
+
+
+
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/muse.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+</body>
+</html>
